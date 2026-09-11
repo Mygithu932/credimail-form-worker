@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CrediMail Contact Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    input[type='text']:focus,
+    input[type='email']:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .honeypot {
+      display: none;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .reset-btn {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .reset-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.error-list {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.error-list ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .message.error-list li {
+      margin-bottom: 4px;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Send us a message!</p>
+    </div>
+
+    <form id="contactForm" novalidate>
+      <!-- Honeypot field (hidden) -->
+      <input
+        type="text"
+        name="website"
+        class="honeypot"
+        tabindex="-1"
+        autocomplete="off"
+      />
+
+      <!-- Timestamp field (hidden) -->
+      <input type="hidden" name="_timestamp" id="formTimestamp" />
+
+      <!-- Name field -->
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="John Doe"
+          required
+        />
+      </div>
+
+      <!-- Email field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <!-- Message field -->
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          placeholder="Tell us what's on your mind..."
+          required
+        ></textarea>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="button-group">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Send Message
+        </button>
+        <button type="reset" class="reset-btn">Clear Form</button>
+      </div>
+
+      <!-- Status messages -->
+      <div class="message" id="statusMessage"></div>
+    </form>
+  </div>
+
+  <script>
+    // WORKER_URL: Replace this with your deployed Cloudflare Worker URL
+    // Example: https://credimail-form-worker.example.com
+    const WORKER_URL = 'https://your-worker-url.example.com/submit';
+
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const timestampField = document.getElementById('formTimestamp');
+
+    // Set timestamp on page load
+    window.addEventListener('load', () => {
+      timestampField.value = Date.now();
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Prepare form data
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      // Clear previous messages
+      statusMessage.classList.remove('show', 'success', 'error', 'error-list');
+      statusMessage.innerHTML = '';
+
+      // Disable submit button and show loading state
+      submitBtn.disabled = true;
+      const originalText = submitBtn.innerText;
+      submitBtn.innerHTML = '<span class="spinner"></span>Sending...';
+
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Success message
+          statusMessage.classList.add('show', 'success');
+          statusMessage.innerHTML = `<strong>✓ Success!</strong> ${result.message}`;
+          form.reset();
+          timestampField.value = Date.now(); // Reset timestamp for next submission
+        } else if (result.errors && typeof result.errors === 'object') {
+          // Validation errors
+          statusMessage.classList.add('show', 'error-list');
+          const errorList = Object.entries(result.errors)
+            .map(([field, message]) => `<li><strong>${field}:</strong> ${message}</li>`)
+            .join('');
+          statusMessage.innerHTML = `<strong>Please fix the following errors:</strong><ul>${errorList}</ul>`;
+        } else {
+          // Generic error
+          statusMessage.classList.add('show', 'error');
+          statusMessage.innerHTML = `<strong>Error:</strong> ${result.error || 'Failed to send message. Please try again.'}`;
+        }
+      } catch (err) {
+        statusMessage.classList.add('show', 'error');
+        statusMessage.innerHTML = `<strong>Error:</strong> Network error. Please check your connection and try again.`;
+        console.error('Form submission error:', err);
+      } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "credimail-form-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for website form submission to email forwarding via Resend",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "lint": "node --check src/index.js"
+  },
+  "keywords": [
+    "cloudflare-workers",
+    "form-submission",
+    "email-forwarding",
+    "resend"
+  ],
+  "author": "CrediMail",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
